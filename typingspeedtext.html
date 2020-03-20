@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap" rel="stylesheet">
+	<style>
+		*{
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+			font-family: 'Josefin Sans', sans-serif;
+		}
+		.mainDiv{
+			width: 100%;
+			height: 100vh;
+			position: relative;
+			background: #3498db;
+		}
+		.centerDiv{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			text-align: center;
+		}
+		h1
+		{
+			text-transform: capitalize;
+			margin-bottom: 30px;
+			color: #ecf0f1;
+			text-shadow: 1px 2px 3px #2980b9;
+			font-size: 2.1rem;
+		}
+		h2{
+			text-align: center;
+		}
+		textarea{
+			background-color: #444;
+			box-shadow: 0 0 1px rgba(0,0,0,0.2);
+			border-radius: 10px 10px 0 0;
+			border: 20px solid #34495e;
+			color: white;
+			font-size: 1.3rem;
+		}
+	
+		.mainbtn{
+			padding: 10px 20px;
+			border-radius: 20px;
+			background-color: #ecf0f1;
+			font-size: 1rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="mainDiv">
+		<div class="centerDiv">
+			<h1>Welcome to typing speed test</h1>
+			<h2 id="msg"></h2>
+			<br>
+			<textarea id="mywords" cols="100" rows="10" placeholder="Remember, be nice!"></textarea>
+			<br>
+			<button id="btn" class="mainbtn">Start</button>
+		</div>
+	</div>
+
+	<script>
+		const setOfWord=[
+          "Slow reading speed of young adults with dyslexia is well-documented.",
+          "However, most studies have examined comprehension in context of complex text rather than in the context of simple, unambiguous sentences leaving the issue of basic level reading comprehension largely unaddressed.",
+          "This study was designed to explore the potential contributions of eye gaze, processing speed, and verbal memory to the comprehension of simple sentence reading in college students with dyslexia. Sixty-four college students with and without dyslexia read simple sentences and answered comprehension questions as their eye movements were recorded and they completed tasks of processing speed and verbal memory capacity.","Students with dyslexia exhibited longer fixation durations on keywords and showed less efficient scanning patterns between text and questions than their peers.","Further, the students’ eye patterns were associated with their performance on the cognitive abilities even after controlling for intelligence, verbal ability, and reading abilities." ,"In spite of the simplicity of the experimental reading task, college students with dyslexia showed less efficient eye-gaze patterns and comprehension strategies.","Longer eye gaze fixations on keywords in print along with slower general processing speed appears to account for the difference in simple text reading between the two groups." 
+		];
+		const msg = document.getElementById('msg');
+		const typeWords = document.getElementById('mywords');
+		const btn = document.getElementById('btn');
+		let startTime, endTime;
+		const playGame = () =>{
+			let randomNumber = Math.floor(Math.random()*setOfWord.length);
+			msg.innerText =setOfWord[randomNumber];
+			let date = new Date();
+			startTime = date.getTime();
+			btn.innerText = "Done";
+
+		}
+
+		const endplay = () => {
+			let date =new Date();
+			endTime = date.getTime();
+			let totalTime =((endTime - startTime)/1000);
+			console.log(totalTime);
+			let totalStr = typeWords.value;
+			let wordCount = wordCounter(totalStr);
+
+			let speed =Math.round((wordCount / totalTime)*60);
+			let finalMsg = " you typed total at "+speed+ " words per minutes ";
+			finalMsg += compareWords(msg.innerText,totalStr);
+			msg.innerText = finalMsg;
+		}
+
+		const compareWords = (str1,str2) =>{
+			let words1 = str1.split(" ");
+			let words2 = str2.split(" ");
+			let cnt = 0;
+			words1.forEach(function(item,index){
+				if(item == words2[index]){
+					cnt++;
+				}
+			})
+
+			let errorWords = (words1.length - cnt);
+			return (cnt + " correct out of " + words1.length + " words and the total number of error are "+ errorWords + " ");
+		}
+
+		const wordCounter = (str) =>{
+			let response = str.split(" ").length;
+			console.log(response);
+			return response;
+		}
+
+
+		 btn.addEventListener('click', function(){
+		 	if(this.innerText == 'Start'){
+		 		typeWords.disabled = false;
+		 		playGame();
+
+		 }else if(this.innerText=="Done"){
+		 	typeWords.disabled = true;
+		 	btn.innerText = "Start";
+		 	endplay();
+		 }
+		 	})
+
+
+
+
+
+	</script>
+</body>
+</html>
